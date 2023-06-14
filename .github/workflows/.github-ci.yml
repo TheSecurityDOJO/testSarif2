@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-    - uses: fortify/gha-export-vulnerabilities@v2.0.2
+    - uses: fortify/gha-export-vulnerabilities@v1.0.2
       with:
         # SSC Base URL (e.g. https://my.ssc.host/ssc)
         ssc_base_url: ${{ secrets.SSC_BASE_URL }}
