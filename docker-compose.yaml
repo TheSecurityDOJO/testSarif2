@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+    openweather:
+        image: nexoss.agile4security.io:5000/a4s/lab-test-deployment:1.0
+
+        hostname: "secnodejs.agile4security.io"
+
+        # Network on which the container is connected
+        networks:
+            - frontend-overlay
+
+        # Deploy constraint for the service
+        deploy:
+            placement:
+                # Force service to run on a specific node
+                constraints:
+                    - "node.hostname == a4slinuxs2"
+
+            # Labels for traefik
+            labels:
+                # Enabling Traekif proxy to access to this service
+                - "traefik.enable=true"
+                # Creation of a new router for the HTTP service. Use the hostname as host for the rule
+                - "traefik.http.routers.openweather-http.rule=Host(`secnodejs.agile4security.io`)"
+                # The entrypoint for the web HTTP declared in the treafik service configuration and change the value if necessary
+                - "traefik.http.routers.openweather-http.entrypoints=web"
+                # Use the redirection middleware
+                - "traefik.http.routers.openweather-http.middlewares=redirection@docker"
+                - "traefik.http.routers.openweather-http.service=openweather"
+                # Creation of a new router for the HTTPS service. Use the hostname as host for the rule
+                - "traefik.http.routers.openweather-https.rule=Host(`secnodejs.agile4security.io`)"
+                # Use the entrypoint for the web secure HTTPS declared in the treafik service configuration and change the value if necessary
+                - "traefik.http.routers.openweather-https.entrypoints=websecure"
+                - "traefik.http.routers.openweather-https.service=openweather"
+                # Declare the certificate solver for the HTTPS certification declared in the treafik service configuration and change the value if necessary
+                - "traefik.http.routers.openweather-https.tls.certresolver=mytlschallenge"
+                # Binding with dashboard
+                - "traefik.http.services.openweather.loadbalancer.server.port=3000"
+networks:
+    frontend-overlay:
+        external: true
