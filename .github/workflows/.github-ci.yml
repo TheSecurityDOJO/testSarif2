@@ -7,15 +7,23 @@ on:
     branches: [ "main" ]
 
 jobs:
+  Fortify-SAST:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+      - name: Download Fortify ScanCentral Client
+        uses: fortify/gha-setup-scancentral-client@v1   
+        with:
+          version: 22.2.0             
+          client-auth-token: ${{ secrets.SSC_AUTHTOKEN_DECODED }}
   export:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Setup Java
-      uses: actions/setup-java@v3
-      with:
-        java-version: 11
     - uses: fortify/gha-export-vulnerabilities@v1.0.1
       with:
         # SSC Base URL (e.g. https://my.ssc.host/ssc)
