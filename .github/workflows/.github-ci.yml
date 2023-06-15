@@ -12,6 +12,10 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+    - name: Setup Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
     - uses: fortify/gha-export-vulnerabilities@v1.0.1
       with:
         # SSC Base URL (e.g. https://my.ssc.host/ssc)
